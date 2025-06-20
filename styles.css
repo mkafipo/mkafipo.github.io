@@ -76,20 +76,17 @@ body {
 
 .image-container {
   width: 100%;
-  aspect-ratio: 1 / 1;
   overflow: hidden;
   position: relative;
   background: #000;
+  aspect-ratio: 4 / 3; /* Or 1 / 1 if square, or remove for natural ratio */
 }
 
 .image-container img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  width: 100%;
   height: 100%;
-  width: auto;
-  transform: translate(-50%, -50%);
   object-fit: cover;
+  display: block;
 }
 
 .caption b {
