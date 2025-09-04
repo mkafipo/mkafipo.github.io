@@ -60,20 +60,29 @@
       height: 200px;
       object-fit: contain;
     }
+	.center-button-wrapper {
+	  display: flex;
+	  justify-content: center; /* center buttons horizontally */
+	  gap: 20px; /* space between buttons */
+	  padding: 100px 20px;
+	}
+	
+	.center-button-wrapper .footer-style-button {
+	  text-decoration: none;
+	  font-size: 16px;
+	  color: black;
+	  border-radius: 50px;
+	  padding: 10px 30px;
+	  transition: 0.3s ease;
+	  font-family: "Lexend Giga", sans-serif;
+	  background: #e0e0e0;
+	  text-align: center;
+	}
+	
+	.center-button-wrapper .footer-style-button:hover {
+	  background: #c0c0c0;
+	}
 
-    .center-button-wrapper {
-      text-align: center;
-      padding: 100px 20px;
-    }
-
-    .center-button-wrapper .footer-style-button {
-      text-decoration: none;
-      font-size: 16px;
-      color: black;
-      border-radius: 50px;
-      transition: 0.3s ease;
-      font-family: "Lexend Giga", sans-serif;
-    }
 
 	.footer {
 	  width: 100%;
@@ -122,9 +131,6 @@
   <!-- Center Button -->
   <div class="center-button-wrapper">
     <a href="blog.html" class="footer-style-button">lookbook</a>
-  </div>
-
-  <div class="center-button-wrapper">
     <a href="facecam.html" class="footer-style-button">ascii art</a>
   </div>
 
@@ -142,4 +148,5 @@
 
 </body>
 </html>
+
 
