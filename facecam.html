@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SOTU Webcam ASCII</title>
+
+<link rel="icon" href="favicon.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Giga&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script src="sketch.js" defer></script>
+
+<style>
+/* Body */
+body {
+  margin: 0;
+  font-family: "Lexend Giga", sans-serif;
+  background: #fff;
+  color: #000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.navbar .logo-link img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* ASCII container */
+#ascii-container {
+  background: #000;
+  margin: 140px auto 40px; /* space for navbar + bottom */
+  padding: 1px 10px;
+  border-radius: 10px;
+  display: inline-block; /* shrink to content width */
+  text-align: left;
+}
+
+#ascii {
+  font-family: monospace;
+  white-space: pre;
+  color: #fff;
+  line-height: 8px;
+  font-size: 8px;
+  user-select: none;
+  display: block;
+}
+
+/* Popup */
+#popup {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 250px;
+  background: rgba(40,40,40,0.95);
+  color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  font-family: "Lexend Giga", sans-serif;
+  font-size: 13px;
+  z-index: 9999;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  cursor: move;
+}
+
+#popup h3 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 500;
+  color: #5957ad;
+}
+
+.slider-container {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: #444;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #2b2a77;
+  cursor: pointer;
+  box-shadow: 0 0 3px #000;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #2b2a77;
+  cursor: pointer;
+  box-shadow: 0 0 3px #000;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+}
+
+.popupBtn {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-radius: 8px;
+  background: #555;
+  color: #fff;
+  font-family: "Lexend Giga", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.popupBtn:hover {
+  background: #777;
+  transform: scale(1.05);
+}
+
+/* Footer */
+.footer {
+  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  font-size: 14px;
+  color: #444;
+}
+
+.footer-links {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: #444;
+  text-decoration: none;
+  margin: 0 10px;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #000;
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: #777;
+}
+</style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header class="navbar" id="navbar">
+    <a href="index.html" class="logo-link">
+      <img src="logo.gif" alt="Logo" />
+    </a>
+  </header>
+
+  <!-- ASCII Art Container -->
+  <div id="ascii-container">
+    <pre id="ascii"></pre>
+  </div>
+
+  <!-- Popup -->
+  <div id="popup">
+    <h3>Controls</h3>
+    <div class="slider-container">
+      <label>Contrast: <span id="contrastVal">0</span></label>
+      <input type="range" id="contrastSlider" min="-100" max="100" value="0">
+    </div>
+    <div class="slider-container">
+      <label>Chars: <span id="charsVal">17</span></label>
+      <input type="range" id="charsSlider" min="5" max="17" value="17">
+    </div>
+    <div class="button-container">
+      <button id="photoBtn" class="popupBtn">Photo</button>
+      <button id="resetBtn" class="popupBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="https://www.instagram.com/user1976386783" target="_blank">Instagram</a>
+      <a href="https://www.youtube.com/channel/UCuCPQRbkkRWhS4Hbh84M4jQ" target="_blank">Youtube</a>
+      <a href="https://sharetext.io/31c55d90" target="_blank">Contact</a>
+    </div>
+    <div class="footer-copy">Copyright © 2025 SOTU</div>
+  </footer>
+
+<script>
+  // Make popup draggable
+  const popup = document.getElementById("popup");
+  let offsetX = 0, offsetY = 0, isDown = false;
+
+  popup.addEventListener("mousedown", e => {
+    isDown = true;
+    offsetX = e.clientX - popup.offsetLeft;
+    offsetY = e.clientY - popup.offsetTop;
+  });
+
+  document.addEventListener("mouseup", () => isDown = false);
+
+  document.addEventListener("mousemove", e => {
+    if (!isDown) return;
+    popup.style.left = (e.clientX - offsetX) + "px";
+    popup.style.top = (e.clientY - offsetY) + "px";
+  });
+</script>
+</body>
+</html>
